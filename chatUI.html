@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./src/output.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Akatab:wght@400;500;600;700;800;900&family=Archivo:ital,wght@0,100..900;1,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=Akatab:wght@400;500;600;700;800;900&family=Archivo:ital,wght@0,100..900;1,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-black/88 m-0 p-0 relative">
+    <img src="./chatBg.png" alt="" class="w-full h-screen object-cover" />
+    <div class="z-20 absolute h-screen w-[300px] bg-black/25 top-0">
+      <div
+        class="flex items-center justify-center w-[228px] h-[68px] opacity-50 bg-neutral-700 rounded-[20px] absolute bottom-[20px] left-9 p-0"
+      >
+        <div
+          class="text-neutral-400 text-2xl font-thin font-['Akatab'] m-0 p-0"
+        >
+          username
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <div class="w-[220px] h-[80px] flex justify-center items-end">
+          <span
+            class="bg-gradient-to-r from-blue-500/50 to-teal-400/80 bg-clip-text text-transparent text-[50px] font-normal font-['Agdasima']"
+            >finGPT</span
+          ><span class="text-stone-500 text-3xl font-normal font-['Agdasima']"
+            >beta</span
+          >
+        </div>
+        <div
+          class="flex flex-col items-center gap-15 px-6 absolute bottom-[150px]"
+        >
+          <button
+            onclick="showPanel('budget')"
+            class="w-full bg-black/30 hover:bg-white/20 font-thin font-['Akatab'] text-lg text-neutral-500 py-5 px-17 rounded-xl"
+          >
+            💰Budget
+          </button>
+          <button
+            onclick="showPanel('expenses')"
+            class="w-full bg-black/30 hover:bg-white/20 font-thin font-['Akatab'] text-lg text-neutral-500 py-5 px-4 rounded-xl"
+          >
+            📉Expenses
+          </button>
+          <button
+            onclick="showPanel('goals')"
+            class="w-full bg-black/30 hover:bg-white/20 font-thin font-['Akatab'] text-lg text-neutral-500 py-5 px-4 rounded-xl"
+          >
+            🎯Goals
+          </button>
+          <button
+            onclick="showPanel('chat')"
+            class="w-full bg-black/30 hover:bg-white/20 font-thin font-['Akatab'] text-lg text-neutral-500 py-5 px-4 rounded-xl"
+          >
+            💬Chat
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="z-20 absolute h-screen w-[1140px] bg-black/50 top-0 right-0">
+      <div class="h-full flex flex-col justify-end px-10 py-6">
+        <!-- 📜 Chat Message Area -->
+        <div
+          id="chatArea"
+          class="flex flex-col gap-4 overflow-y-auto pr-2 mb-4 max-h-[80vh]"
+        >
+          <!-- Messages will be added here -->
+        </div>
+
+        <!-- 📝 Input Form -->
+        <form
+          id="chatForm"
+          class="flex items-center gap-4 bg-neutral-700/70 backdrop-blur-sm rounded-xl px-6 py-4"
+        >
+          <input
+            id="userInput"
+            type="text"
+            placeholder="Type your message..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            class="flex-1 bg-transparent placeholder-white/60 text-white text-lg font-light font-['Akatab'] focus:outline-none focus:ring-0"
+          />
+          <button type="submit">
+            <img src="./Arrow 1.svg" alt="Send" class="w-6 h-6" />
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Budget Panel -->
+    <div
+      id="budgetPanel"
+      class="hidden absolute inset-0 p-10 z-30 bg-black/50 text-white"
+    >
+      <h2 class="text-2xl font-bold mb-4 flex justify-center">
+        💰 Your Budget
+      </h2>
+      <div id="budgetData" class="flex justify-center">Loading...</div>
+      <div class="flex justify-between items-center mb-4">
+        <button
+          onclick="openAddBudget()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg absolute right-10"
+        >
+          ➕ Add Budget
+        </button>
+      </div>
+    </div>
+
+    <!-- Expenses Panel -->
+    <div
+      id="expensesPanel"
+      class="hidden absolute inset-0 p-10 z-30 bg-black/50 text-white"
+    >
+      <h2 class="text-2xl font-bold mb-4 absolute left-[330px]">
+        📉 Your Expenses
+      </h2>
+      <div id="expensesData" class="absolute left-[330px] top-[100px]">
+        Loading...
+      </div>
+      <div class="flex justify-between items-center mb-4">
+        <button
+          onclick="openAddExpense()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg absolute right-10 top-12"
+        >
+          ➕ Add Expense
+        </button>
+      </div>
+    </div>
+
+    <!-- Goals Panel -->
+    <div
+      id="goalsPanel"
+      class="hidden absolute inset-0 p-10 z-30 bg-black/50 text-white"
+    >
+      <h2 class="text-2xl font-bold mb-4 absolute left-[330px]">
+        🎯 Financial Goals
+      </h2>
+      <div id="goalsData" class="absolute left-[330px] top-[100px]">
+        Loading...
+      </div>
+      <div class="flex justify-between items-center mb-4">
+        <button
+          onclick="openAddGoal()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg absolute right-10 top-12"
+        >
+          ➕ Add Goals
+        </button>
+      </div>
+    </div>
+
+    <!-- 💵 Add Budget Modal -->
+    <div
+      id="addBudgetModal"
+      class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50"
+    >
+      <div class="bg-neutral-800 rounded-lg p-6 w-[300px]">
+        <h3 class="text-lg font-semibold mb-4 text-black/50 font-['Akatab']">
+          Set New Budget
+        </h3>
+        <div class="w-[250px] h-[40px] opacity-50 bg-neutral-700 rounded-[5px]">
+          <input
+            id="budgetAmount"
+            type="number"
+            placeholder="Enter amount"
+            class="w-full p-2 mb-4 font-['Akatab'] focus:outline-none focus:ring-0"
+          />
+        </div>
+        <button
+          onclick="submitBudget()"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mt-5"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+
+    <!-- 📈 Add Expense Modal -->
+    <div
+      id="addExpenseModal"
+      class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50"
+    >
+      <div class="bg-neutral-800 rounded-lg p-6 w-[300px]">
+        <h3 class="text-lg font-semibold mb-4 text-black/50 font-['Akatab']">
+          Add Expense
+        </h3>
+        <div
+          class="w-[250px] h-[40px] opacity-50 bg-neutral-700 rounded-[5px] mb-5"
+        >
+          <input
+            id="expenseAmount"
+            type="number"
+            placeholder="Amount"
+            class="w-full p-2 rounded mb-2 focus:ring-0 focus:outline-none"
+          />
+        </div>
+        <div
+          class="w-[250px] h-[40px] opacity-50 bg-neutral-700 rounded-[5px] mb-5"
+        >
+          <input
+            id="expenseCategory"
+            type="text"
+            placeholder="Category"
+            class="w-full p-2 rounded mb-2 focus:ring-0 focus:outline-none"
+          />
+        </div>
+        <div
+          class="w-[250px] h-[40px] opacity-50 bg-neutral-700 rounded-[5px] mb-5"
+        >
+          <input
+            id="expenseDescription"
+            type="text"
+            placeholder="Description"
+            class="w-full p-2 rounded mb-4 focus:ring-0 focus:outline-none"
+          />
+        </div>
+        <button
+          onclick="submitExpense()"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+
+    <!-- 🎯 Add Goal Modal -->
+    <div
+      id="addGoalModal"
+      class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50"
+    >
+      <div class="bg-neutral-800 rounded-lg p-6 w-[300px]">
+        <h3 class="text-lg font-semibold mb-4">Add Goal</h3>
+
+        <div
+          class="w-[250px] h-[40px] opacity-50 bg-neutral-700 rounded-[5px] mb-5"
+        >
+          <input
+            id="goalTitle"
+            type="text"
+            placeholder="Goal Title"
+            class="w-full p-2 rounded mb-2 focus:ring-0 focus:outline-none"
+          />
+        </div>
+        <div
+          class="w-[250px] h-[40px] opacity-50 bg-neutral-700 rounded-[5px] mb-5"
+        >
+          <input
+            id="goalAmount"
+            type="number"
+            placeholder="Amount"
+            class="w-full p-2 rounded mb-2 focus:ring-0 focus:outline-none"
+          />
+        </div>
+        <div
+          class="w-[250px] h-[40px] opacity-50 bg-neutral-700 rounded-[5px] mb-5"
+        >
+          <input
+            id="goalDeadline"
+            type="date"
+            placeholder="Deadline"
+            class="w-full p-2 focus:ring-0 focus:outline-none rounded mb-4"
+          />
+        </div>
+        <button
+          onclick="submitGoal()"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+    <script>
+      const form = document.getElementById("chatForm");
+      const input = document.getElementById("userInput");
+      const chatArea = document.getElementById("chatArea");
+
+      const appendMessage = (text, sender = "user") => {
+        const bubble = document.createElement("div");
+        bubble.textContent = text;
+        bubble.className = `max-w-[70%] px-5 py-3 rounded-[20px] text-white font-['Akatab'] text-lg ${
+          sender === "user"
+            ? "self-end bg-blue-600"
+            : "self-start bg-neutral-700"
+        }`;
+        chatArea.appendChild(bubble);
+        chatArea.scrollTop = chatArea.scrollHeight;
+      };
+
+      const showTyping = () => {
+        const typing = document.createElement("div");
+        typing.id = "typing";
+        typing.textContent = "Typing...";
+        typing.className =
+          "self-start text-stone-400 text-sm font-light font-['Akatab'] italic";
+        chatArea.appendChild(typing);
+        chatArea.scrollTop = chatArea.scrollHeight;
+      };
+
+      const removeTyping = () => {
+        const typing = document.getElementById("typing");
+        if (typing) typing.remove();
+      };
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        appendMessage(msg, "user");
+        input.value = "";
+
+        showTyping();
+
+        try {
+          const res = await fetch("http://localhost:5001/api/chatbot/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg }),
+          });
+
+          const data = await res.json();
+          removeTyping();
+          appendMessage(data.reply, "bot");
+        } catch (err) {
+          removeTyping();
+          appendMessage("Oops! Something went wrong.", "bot");
+        }
+      });
+    </script>
+    <script>
+      const panels = {
+        chat: document.querySelector(".h-full.flex.flex-col"), // existing chat UI
+        budget: document.getElementById("budgetPanel"),
+        expenses: document.getElementById("expensesPanel"),
+        goals: document.getElementById("goalsPanel"),
+      };
+
+      function showPanel(panel) {
+        // Hide all panels
+        ["budgetPanel", "expensesPanel", "goalsPanel"].forEach((id) => {
+          document.getElementById(id).style.display = "none";
+        });
+
+        // Reset loading indicators
+        document.getElementById("budgetData").innerText = "Loading...";
+        document.getElementById("expensesData").innerText = "Loading...";
+        document.getElementById("goalsData").innerText = "Loading...";
+
+        // Show the requested panel + fetch its data
+        if (panel === "budget") {
+          document.getElementById("budgetPanel").style.display = "block";
+          fetchBudget();
+        }
+        if (panel === "expenses") {
+          document.getElementById("expensesPanel").style.display = "block";
+          fetchExpenses();
+        }
+        if (panel === "goals") {
+          document.getElementById("goalsPanel").style.display = "block";
+          fetchGoals();
+          showGoals();
+        }
+      }
+      async function fetchBudget() {
+        const res = await fetch("http://localhost:5001/api/finance/budget");
+        const data = await res.json();
+        document.getElementById(
+          "budgetData"
+        ).innerText = `Total Budget: ₹${data.amount}`;
+      }
+
+      async function fetchExpenses() {
+        const res = await fetch("http://localhost:5001/api/finance/expenses");
+        const data = await res.json();
+        const list = data
+          .map(
+            (item) =>
+              `• ₹${item.amount} - ${item.category} (${item.description})`
+          )
+          .join("\n");
+        document.getElementById("expensesData").innerText = list;
+      }
+
+      async function fetchGoals() {
+        const res = await fetch("http://localhost:5001/api/finance/goals");
+        const data = await res.json();
+        const list = data
+          .map(
+            (goal) => `🎯 ${goal.title}: ₹${goal.amount} by ${goal.deadline}`
+          )
+          .join("\n");
+        document.getElementById("goalsData").innerText = list;
+      }
+    </script>
+    <script>
+      function openAddBudget() {
+        document.getElementById("addBudgetModal").style.display = "flex";
+      }
+
+      function openAddExpense() {
+        document.getElementById("addExpenseModal").style.display = "flex";
+      }
+
+      function openAddGoal() {
+        document.getElementById("addGoalModal").style.display = "flex";
+      }
+
+      async function submitBudget() {
+        const amount = document.getElementById("budgetAmount").value;
+        if (!amount) return alert("Please enter amount.");
+
+        await fetch("http://localhost:5001/api/finance/budget", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount }),
+        });
+
+        document.getElementById("addBudgetModal").style.display = "none";
+        showPanel("budget");
+      }
+
+      async function submitExpense() {
+        const amount = document.getElementById("expenseAmount").value;
+        const category = document.getElementById("expenseCategory").value;
+        const description = document.getElementById("expenseDescription").value;
+
+        if (!amount || !category || !description)
+          return alert("Fill all fields.");
+
+        await fetch("http://localhost:5001/api/finance/expenses", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount, category, description }),
+        });
+
+        document.getElementById("addExpenseModal").style.display = "none";
+        showPanel("expenses");
+      }
+
+      async function submitGoal() {
+        const title = document.getElementById("goalTitle").value;
+        const amount = document.getElementById("goalAmount").value;
+        const deadline = document.getElementById("goalDeadline").value;
+
+        if (!title || !amount || !deadline) return alert("Fill all fields.");
+
+        await fetch("http://localhost:5001/api/finance/goals", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, amount, deadline }),
+        });
+
+        document.getElementById("addGoalModal").style.display = "none";
+        showPanel("goals");
+      }
+
+      async function showGoals() {
+        const goalsData = document.getElementById("goalsData");
+        goalsData.innerHTML = "Loading...";
+
+        const res = await fetch("http://localhost:5001/api/finance/goals");
+        const goals = await res.json();
+
+        goalsData.innerHTML = "";
+
+        goals.forEach((goal) => {
+          const item = document.createElement("div");
+          item.className = "flex items-center gap-2 mb-2 text-white";
+
+          item.innerHTML = `
+        🎯 <span class="font-semibold">${goal.title}</span>: ₹${
+            goal.amount
+          } by ${new Date(goal.deadline).toLocaleDateString()}
+        <button onclick="deleteGoal('${
+          goal._id
+        }')" class="text-red-400 hover:text-red-600 ml-2">❌</button>
+      `;
+
+          goalsData.appendChild(item);
+        });
+      }
+
+      async function deleteGoal(goalId) {
+        if (!confirm("Are you sure you want to delete this goal?")) return;
+
+        await fetch(`http://localhost:5001/api/finance/goals/${goalId}`, {
+          method: "DELETE",
+        });
+
+        showPanel("goals"); // Refresh the goals panel after delete
+      }
+    </script>
+  </body>
+</html>
